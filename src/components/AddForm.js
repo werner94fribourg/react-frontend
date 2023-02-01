@@ -1,13 +1,19 @@
+import { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { addNewTask } from '../store/slices/todo-item';
 import classes from './AddForm.module.css';
 
-const AddForm = props => {
+const AddForm = () => {
+  const inputRef = useRef(null);
+  const dispatch = useDispatch();
+
   const submitHandler = event => {
     event.preventDefault();
-    const value = event.target.querySelector(
-      `.${classes['header__form-input']}`
-    ).value;
+    const value = inputRef.current.value;
+    inputRef.current.value = '';
     if (value === '') return;
-    props.onAdd(value);
+
+    addNewTask(value, dispatch);
   };
   return (
     <form className={classes['header__form']} onSubmit={submitHandler}>
@@ -15,6 +21,7 @@ const AddForm = props => {
         className={classes['header__form-input']}
         type="text"
         placeholder="Title..."
+        ref={inputRef}
       />
       <button className={classes['header__form-submit']} type="submit">
         Add

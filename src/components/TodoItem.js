@@ -1,18 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { changeTaskStatus, deleteTask } from '../store/slices/todo-item';
 import classes from './TodoItem.module.css';
 
 const TodoItem = props => {
-  const id = props.id;
-  const [isChecked, setIsChecked] = useState(props.checked);
+  const dispatch = useDispatch();
+  const { id, title, isChecked } = props.task;
   const deleteTaskHandler = event => {
-    props.onDelete(id);
+    event.stopPropagation();
+    deleteTask(id, dispatch);
   };
-  const statusHandler = event => {
-    setIsChecked(prevState => !prevState);
+
+  const statusHandler = () => {
+    changeTaskStatus(id, dispatch);
   };
-  useEffect(() => {
-    props.onUpdate(id, isChecked);
-  }, [isChecked]);
+
   return (
     <li
       className={`${classes['todo-list__item']}  ${
@@ -20,7 +21,7 @@ const TodoItem = props => {
       }`}
       onClick={statusHandler}
     >
-      {props.title}
+      {title}
       <span className={classes.close} onClick={deleteTaskHandler}>
         ×
       </span>

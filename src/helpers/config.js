@@ -1,1 +1,1 @@
-export const BACKEND_URL = 'https://localhost:7262/api/TodoItems';
+export const BACKEND_URL = 'https://localhost:7296/api/TodoItem';
